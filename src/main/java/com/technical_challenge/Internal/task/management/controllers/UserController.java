@@ -1,6 +1,6 @@
 package com.technical_challenge.Internal.task.management.controllers;
 
-import com.technical_challenge.Internal.task.management.dto.UserDTO;
+import com.technical_challenge.Internal.task.management.dto.UserCreateDTO;
 import com.technical_challenge.Internal.task.management.models.User;
 import com.technical_challenge.Internal.task.management.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +25,8 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserDTO> create(@Validated @RequestBody UserDTO dto){
-        UserDTO userSaved = userService.create(dto);
+    public ResponseEntity<UserCreateDTO> create(@Validated @RequestBody UserCreateDTO dto){
+        UserCreateDTO userSaved = userService.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(userSaved);
     }
 
