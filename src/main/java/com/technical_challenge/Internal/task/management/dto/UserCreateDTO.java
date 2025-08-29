@@ -9,6 +9,7 @@ public class UserCreateDTO {
     @NotBlank(message = "O nome é obrigatório.")
     private String name;
 
+
     @Email(message = "Deve ser um email válido.")
     @NotBlank(message = "O email é obrigatório.")
     private String email;

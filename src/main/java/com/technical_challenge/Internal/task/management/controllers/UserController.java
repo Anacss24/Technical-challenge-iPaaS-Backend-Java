@@ -1,7 +1,7 @@
 package com.technical_challenge.Internal.task.management.controllers;
 
 import com.technical_challenge.Internal.task.management.dto.UserCreateDTO;
-import com.technical_challenge.Internal.task.management.models.User;
+import com.technical_challenge.Internal.task.management.dto.UserResponseDTO;
 import com.technical_challenge.Internal.task.management.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,19 +25,16 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserCreateDTO> create(@Validated @RequestBody UserCreateDTO dto){
-        UserCreateDTO userSaved = userService.create(dto);
+    public ResponseEntity<UserResponseDTO> create(@Validated @RequestBody UserCreateDTO dto){
+        UserResponseDTO userSaved = userService.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(userSaved);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User>searchId(@PathVariable UUID id){
-        User user = userService.searchId(id);
-        if(user != null) {
-            return ResponseEntity.ok(user);
-        }else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<UserResponseDTO>searchId(@PathVariable UUID id){
+        return userService.searchId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
 }

@@ -1,11 +1,13 @@
 package com.technical_challenge.Internal.task.management.services;
+
 import com.technical_challenge.Internal.task.management.dto.UserCreateDTO;
+import com.technical_challenge.Internal.task.management.dto.UserResponseDTO;
 import com.technical_challenge.Internal.task.management.models.User;
 import com.technical_challenge.Internal.task.management.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -16,7 +18,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserCreateDTO create (UserCreateDTO dto) {
+    public UserResponseDTO create (UserCreateDTO dto) {
         if(userRepository.existsByEmail(dto.getEmail())){
             throw new IllegalArgumentException("Email já cadastrado: " + dto.getEmail());
         }
@@ -24,12 +26,12 @@ public class UserService {
         newUser.setEmail(dto.getEmail());
         newUser.setName(dto.getName());
         User userSaved = userRepository.save(newUser);
-        return new UserCreateDTO(userSaved);
+        return new UserResponseDTO(userSaved);
     }
 
-    public User searchId(UUID id){
-        return userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User com o ID " + id + "não foi encontrado"));
+    public Optional<UserResponseDTO>searchId(UUID id){
+        Optional<User> userOptional = userRepository.findById(id);
+        return userOptional.map(UserResponseDTO::new);
     }
 
 
