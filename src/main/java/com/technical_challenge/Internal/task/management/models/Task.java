@@ -13,10 +13,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.Getter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -27,7 +29,7 @@ import java.util.UUID;
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id_task",length = 36)
+    @Column(name = "id_task", length = 36)
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID taskId;
 
@@ -38,28 +40,33 @@ public class Task {
     @Column
     private String description;
 
+    @Getter
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
     private StatusTask status = StatusTask.PENDENTE;
 
     @CreatedDate
-    @Column(name = "creation_date",nullable = false, updatable = false)
+    @Column(name = "creation_date", nullable = false, updatable = false)
     private LocalDateTime creationDate;
 
     @Column(name = "completion_date")
     private LocalDateTime completionDate;
 
-   @ManyToOne
-   @JoinColumn(name = "id_user")
-   private User user;
+    @Getter
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    private User user;
 
-   public void setStatus(StatusTask newStatus){
-       if(newStatus == StatusTask.CONCLUIDA){
-           this.completionDate = LocalDateTime.now();
-       } else {
-           this.completionDate = null;
-       }
-   }
+
+    public void setStatus(StatusTask status) {
+        if (status == StatusTask.CONCLUIDA) {
+            this.completionDate = LocalDateTime.now();
+        } else {
+            this.completionDate = null;
+        }
+
+        this.status = status;
+    }
 
 }
 
