@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -24,17 +27,22 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/")
+    public List<UserResponseDTO> findAllUsers() {
+        return userService.findAllUsers();
+    }
+
     @PostMapping
-    public ResponseEntity<UserResponseDTO> create(@Validated @RequestBody UserCreateDTO dto){
+    public ResponseEntity<UserResponseDTO> createUser(@Validated @RequestBody UserCreateDTO dto) {
         UserResponseDTO userSaved = userService.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(userSaved);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO>searchId(@PathVariable UUID id){
-        return userService.searchId(id)
+    @RequestMapping("/{id}")
+    public ResponseEntity<UserResponseDTO> searchId(@PathVariable UUID id) {
+        Optional<UserResponseDTO> dtoOptional = userService.searchId(id);
+        return dtoOptional
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-
 }
