@@ -7,8 +7,10 @@ import com.technical_challenge.Internal.task.management.repositories.UserReposit
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -18,8 +20,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserResponseDTO create (UserCreateDTO dto) {
-        if(userRepository.existsByEmail(dto.getEmail())){
+    public UserResponseDTO create(UserCreateDTO dto) {
+        if (userRepository.existsByEmail(dto.getEmail())) {
             throw new IllegalArgumentException("Email já cadastrado: " + dto.getEmail());
         }
         User newUser = new User();
@@ -29,10 +31,16 @@ public class UserService {
         return new UserResponseDTO(userSaved);
     }
 
-    public Optional<UserResponseDTO>searchId(UUID id){
-        Optional<User> userOptional = userRepository.findById(id);
-        return userOptional.map(UserResponseDTO::new);
+    public Optional<UserResponseDTO> searchId(UUID id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário com ID" + id + "não foi encontrado"));
+        return Optional.of(new UserResponseDTO(user));
     }
 
-
+    public List<UserResponseDTO> findAllUsers() {
+        List<User> userList = userRepository.findAll();
+        return userList.stream()
+                .map(UserResponseDTO::new)
+                .collect(Collectors.toList());
+    }
 }
