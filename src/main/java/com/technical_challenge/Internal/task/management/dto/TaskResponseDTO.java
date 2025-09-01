@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Data
 public class TaskResponseDTO {
@@ -18,9 +20,9 @@ public class TaskResponseDTO {
     private StatusTask status;
     private LocalDateTime creationDate;
     private LocalDateTime completionDate;
-    private UUID userId;
-    private String nomeUser;
-    private String emailUser;
+    private UUID idUser;
+    private List<SubTaskResponseDTO> subTask;
+
 
 
     public TaskResponseDTO(Task task) {
@@ -30,9 +32,11 @@ public class TaskResponseDTO {
         this.status = task.getStatus();
         this.creationDate = task.getCreationDate();
         this.completionDate = task.getCompletionDate();
-        this.userId = task.getUser().getUserId();
-        this.nomeUser = task.getUser().getName();
-        this.emailUser = task.getUser().getEmail();
+        this.idUser = task.getUser().getUserId();
+        this.subTask = task.getSubTask().stream()
+                .map(SubTaskResponseDTO::new)
+                .collect(Collectors.toList());
+
     }
 
 }
