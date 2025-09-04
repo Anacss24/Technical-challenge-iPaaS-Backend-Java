@@ -20,11 +20,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-@RequestMapping("/task")
+@RequestMapping("/tasks")
 public class TaskController {
 
     @Autowired
@@ -34,6 +35,13 @@ public class TaskController {
     public ResponseEntity<TaskResponseDTO> createTask(@Validated @RequestBody TaskCreateDTO dto) {
         TaskResponseDTO savedTask = taskService.createTask(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedTask);
+    }
+    @RequestMapping("/{id}")
+    public ResponseEntity<TaskResponseDTO> searchId(@PathVariable UUID id) {
+        Optional<TaskResponseDTO> dtoOptional = taskService.searchTaskId(id);
+        return dtoOptional
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping
