@@ -2,6 +2,8 @@ package com.technical_challenge.Internal.task.management.services;
 
 import com.technical_challenge.Internal.task.management.dto.UserCreateDTO;
 import com.technical_challenge.Internal.task.management.dto.UserResponseDTO;
+import com.technical_challenge.Internal.task.management.exceptions.EmailAlreadyRegisteredException;
+import com.technical_challenge.Internal.task.management.exceptions.IdNotFoundException;
 import com.technical_challenge.Internal.task.management.models.User;
 import com.technical_challenge.Internal.task.management.repositories.UserRepository;
 import jakarta.transaction.Transactional;
@@ -22,7 +24,7 @@ public class UserService {
 
     public UserResponseDTO create(UserCreateDTO dto) {
         if (userRepository.existsByEmail(dto.getEmail())) {
-            throw new IllegalArgumentException("Email já cadastrado: " + dto.getEmail());
+            throw new EmailAlreadyRegisteredException();
         }
         User newUser = new User();
         newUser.setEmail(dto.getEmail());
@@ -33,7 +35,7 @@ public class UserService {
 
     public Optional<UserResponseDTO> searchId(UUID id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Usuário com ID" + id + "não foi encontrado"));
+                .orElseThrow(() -> new IdNotFoundException());
         return Optional.of(new UserResponseDTO(user));
     }
 

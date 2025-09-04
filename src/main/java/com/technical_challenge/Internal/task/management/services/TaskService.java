@@ -2,7 +2,7 @@ package com.technical_challenge.Internal.task.management.services;
 
 import com.technical_challenge.Internal.task.management.dto.TaskCreateDTO;
 import com.technical_challenge.Internal.task.management.dto.TaskResponseDTO;
-import com.technical_challenge.Internal.task.management.dto.UserResponseDTO;
+import com.technical_challenge.Internal.task.management.exceptions.IdNotFoundException;
 import com.technical_challenge.Internal.task.management.models.StatusTask;
 import com.technical_challenge.Internal.task.management.models.Task;
 import com.technical_challenge.Internal.task.management.models.User;
@@ -28,7 +28,7 @@ public class TaskService {
 
     public TaskResponseDTO createTask(TaskCreateDTO dto) {
         User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("O Usuário com ID " + dto.getUserId() + "não encotrado"));
+                .orElseThrow(() -> new IdNotFoundException());
 
         Task newTask = new Task();
         newTask.setTitle(dto.getTitle());
@@ -40,13 +40,13 @@ public class TaskService {
 
     public Optional<TaskResponseDTO> searchTaskId(UUID id) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Tarefa com ID" + id + "não foi encontrado"));
+                .orElseThrow(() -> new IdNotFoundException());
         return Optional.of(new TaskResponseDTO(task));
     }
 
     public TaskResponseDTO updateTaskStatus(UUID id, StatusTask status) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Tarefa com ID" + id + "não foi encontrado"));
+                .orElseThrow(() ->  new IdNotFoundException());
 
         if(status == StatusTask.CONCLUIDA){
             if(!task.isAllSubTasksCompleted()){

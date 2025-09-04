@@ -4,6 +4,7 @@ import com.technical_challenge.Internal.task.management.dto.SubTaskCreateDTO;
 import com.technical_challenge.Internal.task.management.dto.SubTaskResponseDTO;
 import com.technical_challenge.Internal.task.management.dto.TaskResponseDTO;
 import com.technical_challenge.Internal.task.management.dto.UserResponseDTO;
+import com.technical_challenge.Internal.task.management.exceptions.IdNotFoundException;
 import com.technical_challenge.Internal.task.management.models.StatusTask;
 import com.technical_challenge.Internal.task.management.models.SubTask;
 import com.technical_challenge.Internal.task.management.models.Task;
@@ -30,7 +31,7 @@ public class SubTaskService {
 
     public SubTaskResponseDTO createSubTask(SubTaskCreateDTO dto, UUID id) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("A Tarefa com ID " + id + "não encontrado"));
+                .orElseThrow(() ->  new IdNotFoundException());
 
         SubTask newSubTask = new SubTask();
         newSubTask.setTitleSub(dto.getTitleSub());
@@ -50,7 +51,7 @@ public class SubTaskService {
 
     public SubTaskResponseDTO updateSubTaskStatus(UUID id, StatusTask status) {
         SubTask subTask = subTaskRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("SubTarefa com ID" + id + "não foi encontrado"));
+                .orElseThrow(() ->  new IdNotFoundException());
 
         subTask.setStatusSub(status);
         SubTask updateSubTask = subTaskRepository.save(subTask);
