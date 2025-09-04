@@ -10,7 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
+// RepositoryJPA
 @DataJpaTest
 // Usar o mesmo banco Mysql
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)

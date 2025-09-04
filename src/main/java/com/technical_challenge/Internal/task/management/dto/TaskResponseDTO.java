@@ -1,8 +1,9 @@
 package com.technical_challenge.Internal.task.management.dto;
 
+
 import com.technical_challenge.Internal.task.management.models.StatusTask;
 import com.technical_challenge.Internal.task.management.models.Task;
-import lombok.Data;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -10,7 +11,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Data
+@Setter
+@Getter
 public class TaskResponseDTO {
 
     private UUID taskId;
@@ -39,4 +41,6 @@ public class TaskResponseDTO {
 
     }
 
+    public TaskResponseDTO() {
+    }
 }

@@ -38,7 +38,7 @@ public class TaskService {
         return new TaskResponseDTO(savedTask);
     }
 
-    public Optional<TaskResponseDTO> searchId(UUID id) {
+    public Optional<TaskResponseDTO> searchTaskId(UUID id) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Tarefa com ID" + id + "não foi encontrado"));
         return Optional.of(new TaskResponseDTO(task));
@@ -47,6 +47,12 @@ public class TaskService {
     public TaskResponseDTO updateTaskStatus(UUID id, StatusTask status) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Tarefa com ID" + id + "não foi encontrado"));
+
+        if(status == StatusTask.CONCLUIDA){
+            if(!task.isAllSubTasksCompleted()){
+                throw new IllegalStateException("Não é possível concluir a tarefa principal pois existem sub-tarefas pendentes.");
+            }
+        }
 
         task.setStatus(status);
         Task updateTask = taskRepository.save(task);

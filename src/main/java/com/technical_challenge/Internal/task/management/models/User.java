@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Entity
 @Data
-@Table(name = "user")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -21,11 +21,11 @@ public class User {
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID userId;
 
-    @Column(nullable = false)
+    @Column(length = 255, nullable = false)
     @NotBlank(message = "O nome é obrigatório")
     private String name;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 255)
     @NotBlank(message = "O email é obrigatório")
     private String email;
 

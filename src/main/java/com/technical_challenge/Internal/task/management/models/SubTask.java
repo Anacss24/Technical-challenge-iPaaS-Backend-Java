@@ -1,10 +1,14 @@
 package com.technical_challenge.Internal.task.management.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.persistence.GenerationType;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,7 +19,10 @@ import java.util.UUID;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @Table(name = "sub_task")
 public class SubTask {
 
@@ -49,5 +56,21 @@ public class SubTask {
     @JoinColumn(name = "id_task")
     private Task task;
 
+    public void setStatusSub(StatusTask statusSub) {
+        if(statusSub == StatusTask.CONCLUIDA){
+            this.completionDateSub = LocalDateTime.now();
+        } else {
+            this.completionDateSub = null;
+        }
+        this.statusSub = statusSub;
+    }
 
+    @Override
+    public String toString() {
+        return "SubTask{" +
+                "subTaskId=" + subTaskId +
+                ", titleSub='" + titleSub + '\'' +
+                ", taskId=" + (task != null ? task.getTaskId() : null) +
+                '}';
+    }
 }
