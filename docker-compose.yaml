@@ -1,0 +1,29 @@
+services:
+  api:
+    ports:
+      - "8080:8080"
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/db_task?serverTimezone=America/Sao_Paulo&useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_DATABASE-PLATFORM: org.hibernate.dialect.MySQLDialect
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: db_task
+
+    healthcheck:
+     test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD"]
+     interval: 10s
+     timeout: 5s
+     retries: 5
+     start_period: 30s
+
