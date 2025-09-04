@@ -1,8 +1,35 @@
 # Task Management ✅
 API de gerenciamento de tarefas.
 ## 🚀 Tecnologias utilizadas
-## 🏃‍♂️ Execução
+## 🏃‍♂️ Execução 
+### Pré-requisitos:
+- Apache Maven 3.9.9
+- MySql 8.0
+- Java 21
+### Clonar o projeto
+`https://github.com/Anacss24/Technical-challenge-iPaaS-Backend-Java.git`
+### Entrar no diretório criado
+`cd Technical-challenge-iPaaS-Backend-Java`
+### Atualize as variáveis do Banco de Dados
+#### Arquivo 
+Technical-challenge-iPaaS-Backend-Java\src\main\resources\application.properties
+```
+spring.datasource.url={DB_URL}
+spring.datasource.username={DB_USER}
+spring.datasource.password={DB_PASSWORD}
+```
+### Executar o comando
+`mvn spring-boot:run`
+
 ## 🐋 Execução com Docker
+### Pré-requisitos:
+- Docker instalado e em funcionamento. 
+### Clonar o projeto
+`https://github.com/Anacss24/Technical-challenge-iPaaS-Backend-Java.git`
+### Entrar no diretório criado
+`cd Technical-challenge-iPaaS-Backend-Java`
+### Executar o comando
+`docker-compose up --build`
 ## 📋 Endpoints
  ### User  
   - `GET`  `http://localhost:8000/user/{id}` -> Busca um usuário por ID
