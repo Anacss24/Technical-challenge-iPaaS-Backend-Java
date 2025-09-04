@@ -1,5 +1,6 @@
 package com.technical_challenge.Internal.task.management.models;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -25,6 +26,7 @@ public class User {
     @NotBlank(message = "O nome é obrigatório")
     private String name;
 
+    @Schema(example = "email@email.com.br")
     @Column(nullable = false, unique = true, length = 255)
     @NotBlank(message = "O email é obrigatório")
     private String email;
